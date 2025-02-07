@@ -63,5 +63,5 @@ The code converts hyphens to space characters, to make it easier to write and re
 browser address bar.
 
 ```sh
-host:9090/generate?prompt=angry-scary-dog-chasing-a-postman
+localhost:9090/generate?prompt=angry-scary-dog-chasing-a-postman
 ```
