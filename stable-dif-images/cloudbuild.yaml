@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/stable-d',
+    '-f', 'Dockerfile',
+    '.'
+  ]
+images: ['$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/stable-d']
+options:
+  machineType: 'E2_HIGHCPU_32'
