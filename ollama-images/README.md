@@ -44,6 +44,13 @@ You just need to run one of these, depending on the model you want to use
 ```sh
 MODEL_ID="gemma2:9b"
 MODEL_NAME="gemma2"
+````
+
+## Gemma 3
+
+```sh
+MODEL_ID="gemma3:27b"
+MODEL_NAME="gemma3"
 ```
 
 ### DeepSeek R1 14B Distill

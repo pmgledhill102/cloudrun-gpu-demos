@@ -19,6 +19,10 @@ winget install Ollama.Ollama
 
 ## Execution
 
+```sh
+ollama serve &
+```
+
 ### Llama
 
 ```sh
@@ -30,7 +34,12 @@ ollama stop llama2
 ### DeepSeek
 
 ```sh
-ollama run hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q4_K_M
+ollama run deepseek-r1:14b
 
-ollama stop hf.co/bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF:Q4_K_M
+ollama stop deepseek-r1:14b
 ```
+
+### Example Prompts
+
+- What do you need to remember when participating in a tech Podcast?
+- How would you run a successful Serverless Days Manchester conference?

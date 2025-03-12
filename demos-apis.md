@@ -49,7 +49,7 @@ $'{
     "role": "user",
     "parts": [
       {
-        "text": "What\'s a good name for a flower shop that specializes in selling bouquets of dried flowers?"
+        "text": "What is the best way to introduce serverless technologies into an enterprise"
       }
     ]
   }
