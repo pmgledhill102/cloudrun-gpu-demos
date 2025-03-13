@@ -110,16 +110,32 @@ gcloud run services proxy ollama-$MODEL_NAME --port=9090 --region=$REGION
 The Ollama model takes a number of different endpoints you can call - see the docs for more details: <https://github.com/ollama/ollama/blob/main/docs/api.md>
 
 ```sh
+# Basic call to the API
 curl http://localhost:9090/api/generate -d '{
   "model": "'"${MODEL_ID}"'",
-  "prompt": "Why is the sky blue?",
+  "prompt": "can you plan a wedding?",
   "stream": false
-}' | jq -r ".response"
+}'
 
+# Extract the text out of the JSON body
 curl http://localhost:9090/api/generate -d '{
   "model": "'"${MODEL_ID}"'",
   "prompt": "can you plan a wedding?",
   "stream": false
 }' | jq -r ".response"
+
+# Streamed basic response
+curl http://localhost:9090/api/generate -d '{
+  "model": "'"${MODEL_ID}"'",
+  "prompt": "can you plan a wedding?",
+  "stream": true
+}'
+
+# Streamed simplified response
+curl -N -s http://localhost:9090/api/generate -d '{
+  "model": "'"${MODEL_ID}"'",
+  "prompt": "can you plan a wedding?",
+  "stream": true
+}' | jq --unbuffered -r ".response"
 
 ```
