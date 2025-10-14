@@ -28,7 +28,7 @@ curl https://api.openai.com/v1/chat/completions \
 
 ## VertexAI Studio
 
-VertexAI Studio console is a great place to play with the Google hosted models: 
+VertexAI Studio console is a great place to play with the Google hosted models:
 <https://console.cloud.google.com/vertex-ai/studio?project=play-pen-pup&inv=1&invt=Abo2jA>
 
 ## VertexAI
