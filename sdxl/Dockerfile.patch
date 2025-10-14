@@ -1,0 +1,5 @@
+# Quick patch - update server.py with GCS download fix
+FROM europe-west1-docker.pkg.dev/ai-labs-474813/cloudrun-demos/sdxl-lcm:latest
+
+# Update server.py with fixed GCS paths
+COPY server.py /app/server.py

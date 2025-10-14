@@ -1,1 +1,7 @@
 temp/
+models/
+sdxl/models/
+*.pyc
+__pycache__/
+.venv/
+.DS_Store

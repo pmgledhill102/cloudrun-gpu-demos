@@ -1,0 +1,23 @@
+steps:
+  # Build the container image with Docker caching
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--cache-from'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/cloudrun-demos/sdxl-lcm:latest'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/cloudrun-demos/sdxl-lcm:latest'
+      - '.'
+
+images:
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/cloudrun-demos/sdxl-lcm:latest'
+
+options:
+  # Use a more powerful machine (8 vCPU, 32GB RAM)
+  machineType: 'E2_HIGHCPU_8'
+  
+  # Increase disk size for better performance with large downloads
+  diskSizeGb: '100'
+  
+  # Enable Docker layer caching
+  logging: CLOUD_LOGGING_ONLY

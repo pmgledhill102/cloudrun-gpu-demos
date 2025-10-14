@@ -31,6 +31,26 @@ ollama run llama2
 ollama stop llama2
 ```
 
+### Gemma 3 (270m - 292MB)
+
+```sh
+ollama pull gemma3:270m
+
+ollama run gemma3:270m
+
+ollama stop gemma3:270m
+```
+
+### Gemma 3 (12b - 8.1GB)
+
+```sh
+ollama pull gemma3:12b
+
+ollama run gemma3:12b
+
+ollama stop gemma3:12b
+```
+
 ### DeepSeek
 
 ```sh

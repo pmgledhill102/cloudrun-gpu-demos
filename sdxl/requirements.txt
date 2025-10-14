@@ -1,0 +1,14 @@
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+fastapi==0.114.1
+uvicorn==0.30.6
+torch==2.5.1+cu124
+torchvision==0.20.1+cu124
+xformers
+
+diffusers==0.30.3
+transformers==4.44.2
+accelerate==0.34.2
+safetensors==0.4.4
+Pillow==10.4.0
+hf-transfer

@@ -1,15 +1,23 @@
 {
     "cSpell.words": [
+        "artifactregistry",
         "bartowski",
         "Cloudbuild",
         "cloudrun",
         "deepseek",
+        "dpmpp",
         "GGUF",
+        "gsutil",
+        "healthz",
         "HIGHCPU",
+        "lowres",
         "Macbook",
+        "Multistep",
         "Nvida",
         "ollama",
         "Qwen",
+        "sdxl",
+        "stabilityai",
         "winget"
     ]
 }

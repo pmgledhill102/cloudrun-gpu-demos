@@ -1,0 +1,15 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-f'
+      - 'Dockerfile.patch'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/cloudrun-demos/sdxl-lcm:latest'
+      - '.'
+
+images:
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/cloudrun-demos/sdxl-lcm:latest'
+
+options:
+  machineType: 'E2_HIGHCPU_8'
