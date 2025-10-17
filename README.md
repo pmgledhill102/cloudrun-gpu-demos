@@ -16,3 +16,11 @@ See [demos-apis.md](demos-apis.md) for calling OpenAI ChatGPT and Google APIs to
 ## Cloud Run Hosted Models
 
 See [demos-cloudrun.md](demos-cloudrun.md) for examples of hosting GPU enabled containers in Cloud Run.
+
+## UI Prompts
+
+Passing the Google Architect Certification
+
+``` prompt
+I am a cloud engineer with 20 years enterprise experience across software development, architecture and support. I'm wanting to pass the Google Professional Cloud Architect exam. Using the attached exam guide, please quiz me with possible questions in the style of the exam, and then giving me answers that explain both the correct and wrong answers. Can you show me the questions in a readable format - and then prompt for an answer before you show me the reasoning?
+```

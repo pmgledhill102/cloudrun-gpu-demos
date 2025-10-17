@@ -34,27 +34,28 @@ VertexAI Studio console is a great place to play with the Google hosted models:
 ## VertexAI
 
 ```sh
-MODEL_ID="gemini-1.5-flash-002"
+MODEL_ID="gemini-2.5-flash-lite"
 PROJECT_ID=$(gcloud config get-value project)
 REGION="europe-west4"
 ```
 
 ```sh
-curl -X POST \
+curl --no-buffer \
 -H "Authorization: Bearer $(gcloud auth print-access-token)" \
 -H "Content-Type: application/json" \
-https://$REGION-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/$REGION/publishers/google/models/${MODEL_ID}:generateContent -d \
+https://$REGION-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/$REGION/publishers/google/models/${MODEL_ID}:streamGenerateContent \
+-d \
 $'{
   "contents": {
     "role": "user",
     "parts": [
       {
-        "text": "What is the best way to introduce serverless technologies into an enterprise"
+        "text": "Help me plan a romantic 4 day holiday to Milan with my wife. Create a detailed itinerary that includes some down time."
       }
     ]
   }
 }' \
-| jq -r '.candidates[0].content.parts[0].text'
+| jq -r -c '.[] | .candidates[0].content.parts[0].text'
 ```
 
 ## gemini-2.0-pro-exp-02-05

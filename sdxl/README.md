@@ -111,3 +111,7 @@ curl -s -X POST $SERVICE_URL/generate \
 - Container downloads models from GCS on startup (fast, no rate limits)
 - Models are cached in `/tmp/models` for faster subsequent cold starts
 - Using fp16 precision for optimal L4 GPU memory usage (~8GB model size)
+
+## Prompts
+
+- "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
