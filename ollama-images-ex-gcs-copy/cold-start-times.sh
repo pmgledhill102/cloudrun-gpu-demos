@@ -1,17 +1,18 @@
 #!/bin/bash
-# Script to check cold start times for all model images
+# Script to check cold start times for all model images with GCS copy
 # Measures time from service update until model is fully loaded and available
 
 # Set variables
 REGION=europe-west1
 PROJECT_ID=$(gcloud config get-value project)
-RUN_SERVICE_NAME=ollama-generic
+RUN_SERVICE_NAME=ollama-gcs
 
 # Model variables
 MODEL_FAMILY="gemma3"
-MODEL_PARAMS_LIST=("12b") #"270m" "1b" "4b" "12b" "27b")
+MODEL_PARAMS_LIST=( "27b" ) # "270m" "1b" "4b" "12b" "27b")
 PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
 TOKEN=$(gcloud auth print-identity-token)
+GCS_BUCKET_NAME=ollama-models-${PROJECT_ID}
 
 # Arrays to store results for summary
 declare -a SUMMARY_MODELS
@@ -30,22 +31,22 @@ do
   echo "Testing ${MODEL_NAME}..."
   echo "  Updating Cloud Run service with MODEL_ID=${MODEL_ID}..."
   
-  # Update the service
+  # Now update with new model and scale back up
+  # Start timing from this point
+  START_TIME=$(date +%s)
+  
   gcloud run services update ${RUN_SERVICE_NAME} \
-    --set-env-vars=MODEL_ID="$MODEL_ID" \
+    --set-env-vars=MODEL_ID="$MODEL_ID",GCS_BUCKET_NAME="$GCS_BUCKET_NAME" \
+    --max-instances=1 \
     --region=$REGION \
-    --quiet
+    --quiet \
+    --startup-probe=
 
   # Construct the tags URL
   RUN_URL=https://${RUN_SERVICE_NAME}-${PROJECT_NUMBER}.${REGION}.run.app
   TAGS_URL="${RUN_URL}/api/tags"
 
-  echo "  Waiting 5 seconds for Cloud Run to process the update..."
-  sleep 5
-  
-  # Start timing after the service update and wait period
-  echo "  Starting timer and polling for model availability..."
-  START_TIME=$(date +%s)
+  echo "  Service updated. Making first request to trigger cold start..."
   
   # Poll the tags endpoint until it returns a non-empty model list
   echo "  Polling ${TAGS_URL} until model is loaded..."

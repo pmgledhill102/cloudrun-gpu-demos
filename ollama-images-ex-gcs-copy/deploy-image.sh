@@ -14,7 +14,7 @@ echo "Service Name: ${RUN_SERVICE_NAME}"
 echo "GCS Bucket: ${GCS_BUCKET_NAME}"
 
   gcloud beta run deploy ${RUN_SERVICE_NAME} \
-    --image $REGION-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/ollama-gcs-copy \
+    --image $REGION-docker.pkg.dev/$PROJECT_ID/$GAR_NAME/ollama-gcs-runtime \
     --concurrency 1 \
     --cpu 8 \
     --set-env-vars OLLAMA_NUM_PARALLEL=1,GCS_BUCKET_NAME="${GCS_BUCKET_NAME}" \
@@ -28,7 +28,6 @@ echo "GCS Bucket: ${GCS_BUCKET_NAME}"
     --timeout=600 \
     --region=$REGION \
     --no-gpu-zonal-redundancy
-  
 
 echo ""
 echo "Deployment completed!"

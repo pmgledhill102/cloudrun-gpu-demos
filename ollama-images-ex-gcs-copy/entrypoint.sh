@@ -23,24 +23,59 @@ MODEL_NAME=$(echo "$MODEL_ID" | tr ':' '-')
 # Construct the GCS path following the structure: gs://bucket/models/model-name
 GCS_BUCKET_PATH="gs://${GCS_BUCKET_NAME}/models/${MODEL_NAME}"
 
-echo "Starting model copy from GCS..."
+echo "Starting Ollama server first to satisfy Cloud Run startup probe..."
 echo "Model ID: ${MODEL_ID}"
 echo "Model Name: ${MODEL_NAME}"
-echo "Source: ${GCS_BUCKET_PATH}"
-echo "Destination: ${OLLAMA_MODELS}"
 
 # Create the destination directory
 mkdir -p "${OLLAMA_MODELS}"
 
-# Use gsutil to copy the model files from GCS to the Ollama models directory
-# The -m flag enables parallel copying for speed
-gsutil -m rsync -r "${GCS_BUCKET_PATH}" "${OLLAMA_MODELS}"
-
-echo "Model copy complete."
-echo "Models available in: ${OLLAMA_MODELS}"
-
 # Start Ollama server in the background
 echo "Starting Ollama server..."
+ollama serve &
+OLLAMA_PID=$!
+
+# Give Ollama a moment to start
+sleep 5
+echo "Ollama server started (PID: ${OLLAMA_PID}). Cloud Run startup probe should now pass."
+
+# Now copy the model files in the background while Ollama is running
+echo "Starting model copy from GCS in parallel..."
+echo "Source: ${GCS_BUCKET_PATH}"
+echo "Temporary destination: /root/.ollama/models-temp"
+
+TEMP_MODELS_DIR="/root/.ollama/models-temp"
+mkdir -p "${TEMP_MODELS_DIR}"
+
+# Use gsutil to copy the model files to temporary location
+echo "Starting gsutil rsync..."
+SYNC_START=$(date +%s)
+
+gsutil -m rsync -r "${GCS_BUCKET_PATH}" "${TEMP_MODELS_DIR}"
+
+SYNC_END=$(date +%s)
+SYNC_DURATION=$((SYNC_END - SYNC_START))
+
+echo "Model copy complete in ${SYNC_DURATION} seconds."
+
+# Now stop Ollama, swap the directories, and restart
+echo "Stopping Ollama to swap model directories..."
+kill $OLLAMA_PID || true
+wait $OLLAMA_PID 2>/dev/null || true
+
+echo "Swapping model directories..."
+# Rename old models folder (if it has anything)
+if [ -d "${OLLAMA_MODELS}" ] && [ "$(ls -A ${OLLAMA_MODELS})" ]; then
+    mv "${OLLAMA_MODELS}" "${OLLAMA_MODELS}.old"
+fi
+
+# Move the new models into place
+mv "${TEMP_MODELS_DIR}" "${OLLAMA_MODELS}"
+
+echo "Models now available in: ${OLLAMA_MODELS}"
+
+# Restart Ollama server
+echo "Restarting Ollama server with new models..."
 ollama serve &
 OLLAMA_PID=$!
 

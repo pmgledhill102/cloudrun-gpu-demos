@@ -112,13 +112,23 @@ gcloud builds submit \
 
 Run the above command for each model you want to make available:
 
-| Model ID    | Model Size | Upload Time (est) |
-|-------------|------------|-------------------|
-| gemma3:270m | Small      | ~2-3 minutes      |
-| gemma3:1b   | Small      | ~3-4 minutes      |
-| gemma3:4b   | Medium     | ~5-7 minutes      |
-| gemma3:12b  | Large      | ~12-15 minutes    |
-| gemma3:27b  | X-Large    | ~20-25 minutes    |
+| Model ID    | Model Size | Upload Time |
+|-------------|------------|-------------|
+| gemma3:270m | Small      | 2m 4s       |
+| gemma3:1b   | Small      | 2m 6s       |
+| gemma3:4b   | Medium     | 2m 26s      |
+| gemma3:12b  | Large      | 3m 52s      |
+| gemma3:27b  | X-Large    | 7m 13s      |
+
+Common image build time: 2m 9s
+
+Model           | Cold Start Time | GCS Copy Time | Status
+----------------+-----------------+---------------+--------------
+gemma3-270m     | 37s             | 9s            | ✓ Success
+gemma3-1b       | 47s             | 17s           | ✓ Success
+gemma3-4b       | 82s             | 58s           | ✓ Success
+gemma3-12b      | 193s            | 136s          | ✓ Success
+gemma3-27b      | TIMEOUT         | ??            | ✗ Failed
 
 ## Step 4: Common Artifact Registry
 
