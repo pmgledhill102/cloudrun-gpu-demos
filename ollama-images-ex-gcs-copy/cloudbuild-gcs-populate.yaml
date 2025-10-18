@@ -1,0 +1,65 @@
+# This Cloud Build job downloads a specified Ollama model and copies it to a GCS bucket.
+# This is a one-time operation per model to pre-populate the storage bucket.
+steps:
+- name: 'ollama/ollama:0.12.6'
+  id: 'pull-model'
+  env:
+    - 'OLLAMA_MODELS=/workspace/models'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    # Start Ollama server in background
+    ollama serve &
+    OLLAMA_PID=$$!
+    
+    # Wait for Ollama to be ready
+    echo "Waiting for Ollama to start..."
+    sleep 10
+    
+    # Pull the model (will download directly to /workspace/models)
+    echo "Pulling model: $_MODEL_ID"
+    ollama pull $_MODEL_ID
+    
+    # Wait for the download to fully complete and flush to disk
+    echo "Waiting for download to complete..."
+    sleep 5
+    
+    # Verify models were downloaded
+    if [ -d "/workspace/models" ]; then
+      echo "Models downloaded to /workspace/models"
+    else
+      echo "ERROR: /workspace/models directory not found!"
+      exit 1
+    fi
+    
+    # Kill Ollama server
+    kill $$OLLAMA_PID || true
+
+- name: 'gcr.io/google.com/cloudsdktool/google-cloud-cli'
+  id: 'copy-to-gcs'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    echo "Copying models from /workspace/models to GCS..."
+    
+    # Verify the directory exists in this step
+    if [ ! -d "/workspace/models" ]; then
+      echo "ERROR: /workspace/models not found in this step!"
+      ls -la /workspace/
+      exit 1
+    fi
+    
+    # Copy the model files to GCS in a subfolder based on the model ID
+    gsutil -m rsync -r /workspace/models gs://$_GCS_BUCKET_NAME/models/$_MODEL_NAME
+    
+    echo "Copy complete! Models stored in gs://$_GCS_BUCKET_NAME/models/$_MODEL_NAME"
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  # High CPU machine for faster model downloads
+
+tags:
+  - 'gcs-populate'
+  - '$_MODEL_NAME'

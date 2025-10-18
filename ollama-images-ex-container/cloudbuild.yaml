@@ -1,0 +1,15 @@
+# Using a Cloudbuild.yaml so that I can template the model
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-${_MODEL_NAME}',
+    '--build-arg', '_MODEL=$_MODEL_ID',
+    '-f', 'Dockerfile',
+    '.'
+  ]
+images: ['$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-${_MODEL_NAME}']
+options:
+  machineType: 'E2_HIGHCPU_32'
+  # Crucially, these instance types have faster network access
+  # 14 minutes to 7 minutes build time

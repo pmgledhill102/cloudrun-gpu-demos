@@ -1,0 +1,12 @@
+# Build a generic Ollama image that pulls models at runtime
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-runtime',
+    '-f', 'Dockerfile',
+    '.'
+  ]
+images: ['$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-runtime']
+options:
+  machineType: 'E2_HIGHCPU_8'
