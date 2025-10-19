@@ -34,16 +34,20 @@ VertexAI Studio console is a great place to play with the Google hosted models:
 ## VertexAI
 
 ```sh
-MODEL_ID="gemini-2.5-flash-lite"
+
 PROJECT_ID=$(gcloud config get-value project)
 REGION="europe-west4"
 ```
 
 ```sh
-curl --no-buffer \
--H "Authorization: Bearer $(gcloud auth print-access-token)" \
+AUTH_TOKEN=$(gcloud auth print-access-token)
+MODEL_ID="gemini-2.5-flash"
+MODEL_URL=https://$REGION-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/$REGION/publishers/google/models/${MODEL_ID}:streamGenerateContent 
+
+curl -s --no-buffer \
+-H "Authorization: Bearer $AUTH_TOKEN" \
 -H "Content-Type: application/json" \
-https://$REGION-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/$REGION/publishers/google/models/${MODEL_ID}:streamGenerateContent \
+$MODEL_URL \
 -d \
 $'{
   "contents": {
@@ -55,7 +59,9 @@ $'{
     ]
   }
 }' \
-| jq -r -c '.[] | .candidates[0].content.parts[0].text'
+| grep --line-buffered '"text"' \
+| sed -u 's/.*"text": "\(.*\)".*/\1/' \
+| sed -u 's/\\n/\n/g'
 ```
 
 ## gemini-2.0-pro-exp-02-05
@@ -94,11 +100,14 @@ PROJECT_ID=$(gcloud config get-value project)
 GAR_NAME=gpu-demos
 SERVICE_ACCOUNT=sd-identity
 TOKEN=$(gcloud auth application-default print-access-token)
+
+MODEL_ID="imagegeneration"
+MODEL_URL="https://$REGION-aiplatform.googleapis.com/v1/projects/$PROJECT_ID/locations/$REGION/publishers/google/models/imagegeneration:predict"
 ```
 
 ```sh
 curl -X POST \
--H "Authorization: Bearer $TOKEN" \
+-H "Authorization: Bearer $AUTH_TOKEN" \
 -H "Content-Type: application/json" \
 -d '{
   "instances": [

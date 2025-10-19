@@ -32,7 +32,7 @@ do
     --gpu-type nvidia-l4 \
     --max-instances 1 \
     --memory 32Gi \
-    --no-allow-unauthenticated \
+    --allow-unauthenticated \
     --no-cpu-throttling \
     --service-account $SERVICE_ACCOUNT@$PROJECT_ID.iam.gserviceaccount.com \
     --timeout=600 \

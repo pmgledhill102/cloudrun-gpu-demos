@@ -1,0 +1,14 @@
+# Build a generic Ollama image with GCS FUSE mounting capability
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', '$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-gcs-fuse-runtime',
+    '-f', 'Dockerfile',
+    '.'
+  ]
+images: ['$_REGION-docker.pkg.dev/$PROJECT_ID/$_GAR_NAME/ollama-gcs-fuse-runtime']
+options:
+  machineType: 'E2_HIGHCPU_8'
+tags:
+  - 'gcs-fuse-runtime'

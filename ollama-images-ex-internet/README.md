@@ -68,12 +68,12 @@ Build time: ~1-2 minutes (much faster since no model download!)
 
 Supported models (all use the same container image):
 
-| Model ID    | Model Size | Build Time | Runtime Pull Time (est) |
-|-------------|------------|------------|-------------------------|
+| Model ID    | Model Size | Build Time | Runtime Pull Time |
+|-------------|------------|------------|-------------------|
 | gemma3:270m | Small      | 1m 3s      | 6s |
 | gemma3:1b   | Small      | 1m 3s      | 22s |
 | gemma3:4b   | Medium     | 1m 3s      | 1m 19s |
-| gemma3:12b  | Large      | 1m 3s      | 3m 55s | ** ESTIMATED **
+| gemma3:12b  | Large      | 1m 3s      | 3m 55s * |
 | gemma3:27b  | X-Large    | 1m 3s      | 6m 20s |
 
 ## Deploy
