@@ -9,7 +9,7 @@ RUN_SERVICE_NAME=ollama-gcs
 
 # Model variables
 MODEL_FAMILY="gemma3"
-MODEL_PARAMS_LIST=( "27b" ) # "270m" "1b" "4b" "12b" "27b")
+MODEL_PARAMS_LIST=( "270m" "1b" "27b" ) # "4b" "12b" "27b")
 PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format="value(projectNumber)")
 TOKEN=$(gcloud auth print-identity-token)
 GCS_BUCKET_NAME=ollama-models-${PROJECT_ID}

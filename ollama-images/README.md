@@ -138,4 +138,24 @@ curl -N -s http://localhost:9090/api/generate -d '{
   "stream": true
 }' | jq --unbuffered -r ".response"
 
+# Dump response
+MODEL_ID=gemma3:270m
+SERVICE_URL=https://ollama-632128810163.europe-west1.run.app/
+
+curl -N -s $SERVICE_URL/api/generate -d '{
+  "model": "'"${MODEL_ID}"'",
+  "prompt": "Can you tell me a good Carbonara recipe?",
+  "stream": true
+}'
+
+curl -N -s $SERVICE_URL/api/generate -d '{
+  "model": "'"${MODEL_ID}"'",
+  "prompt": "Can you tell me a good Carbonara recipe?",
+  "stream": true
+}' \
+| grep --line-buffered '"response"' \
+| sed -u 's/.*"response":"\([^"]*\)".*/\1/' \
+| sed -u 's/\\n/\n/g' \
+| while IFS= read -r line; do printf "%s" "$line"; done
+
 ```

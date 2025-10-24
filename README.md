@@ -17,6 +17,10 @@ See [demos-apis.md](demos-apis.md) for calling OpenAI ChatGPT and Google APIs to
 
 See [demos-cloudrun.md](demos-cloudrun.md) for examples of hosting GPU enabled containers in Cloud Run.
 
+## Storage Strategy Perf Testing
+
+- [Scalable AI starts with storage guide to model artifact strategies](https://cloud.google.com/blog/topics/developers-practitioners/scalable-ai-starts-with-storage-guide-to-model-artifact-strategies)
+
 ## UI Prompts
 
 Passing the Google Architect Certification

@@ -76,6 +76,16 @@ Supported models (all use the same container image):
 | gemma3:12b  | Large      | 1m 3s      | 3m 55s * |
 | gemma3:27b  | X-Large    | 1m 3s      | 6m 20s |
 
+
+Model           | Cold Start Time | Status
+----------------+-----------------+--------------
+gemma3-12b      | 197s            | ✓ Success
+gemma3-270m     | 28s             | ✓ Success
+gemma3-1b       | 42s             | ✓ Success
+gemma3-4b       | 104s            | ✓ Success
+gemma3-12b      | 219s            | ✓ Success
+gemma3-27b      | 416s            | ✓ Success
+
 ## Deploy
 
 Deploy services for all models (or choose specific ones):
